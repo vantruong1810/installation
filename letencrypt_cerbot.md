@@ -1,5 +1,7 @@
 Setup LET’S ENCRYPT CLIENT
+
 Preference: [LINK](https://nodejs.vn/topic/113/t%E1%BB%B1-t%E1%BA%A1o-v%C3%A0-c%C3%A0i-%C4%91%E1%BA%B7t-ssl-mi%E1%BB%85n-ph%C3%AD-cho-nginx-apache-v%E1%BB%9Bi-letsencrypt "link")
+
 # Prerequisites
 - NGINX
 - GIT
@@ -13,6 +15,7 @@ Or `python2.7 -v` or `python3.5 -v`
 Or check in directory `/usr/local/bin/`
 
 If python version < 2.7 do as below or skip this step:
+
 Eg: Install python 2.7.6
 ```
 yum -y update
@@ -41,15 +44,22 @@ OR `sudo systemctl stop nginx.service`
 cd /opt/letsencrypt
 ./letsencrypt-auto certonly --standalone
 ```
-Agree all
+
+*Input domains which use ssl certificates and Agree all*
+
 ### Note: 
-SLL files:
+SSL files:
 
 `cert.pem`: Domain certificate SSL.
+
 `chain.pem`: Let’s Encrypt certificate.
+
 `fullchain.pem`: Merge cert.pem and chain.pem.
+
 `privkey.pem`: Private key.
+
 SSL path: `/etc/letencrypt/live/domain.com/`
+
 ## Renew Let's Encrypt
 ### Manually
 ```
@@ -76,4 +86,7 @@ Run this command:
 cd /opt/letsencrypt
 ./letsencrypt-auto certonly -a webroot --renew-by-default --config /usr/local/etc/le-renew-webroot.ini
 ```
+
 [Optional] Maybe run `sudo nginx restart` as well
+
+*SSL will be expired after 3 months*
