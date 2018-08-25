@@ -1,3 +1,6 @@
+Refer: 
+Fix bug permissio laravel log: https://confluence.atlassian.com/bitbucketserverkb/13-permission-denied-while-connecting-to-upstream-while-configuring-ngnix-803374014.html
+https://confluence.atlassian.com/bitbucketserverkb/13-permission-denied-while-connecting-to-upstream-while-configuring-ngnix-803374014.html
 1. Update
 ```
 sudo yum update
@@ -24,9 +27,9 @@ yum-config-manager --enable remi-php72
 yum update
 yum search php72 | more
 yum install php72 php72-php-fpm php72-php-gd php72-php-json php72-php-mbstring php72-php-mysqlnd php72-php-xml php72-php-xmlrpc php72-php-opcache
-
 ```
 /etc/nginx/conf.d/default
+
 ```
 server {
     listen       80;
@@ -54,11 +57,14 @@ server {
     }
 }
 ```
+
 @NOTE: If php72 -v change to php -v 
+
 ```
 scl enable php72 bash
 ```
 5. Install MySQL
+
 ```
 yum install mysql-server
 systemctl start mysqld
@@ -70,3 +76,19 @@ USE dbname;
 \. path_sql_file.sql #import
 ```
 
+6. PostgreSQL 10
+Link: https://www.postgresql.org/download/linux/redhat/
+```
+yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+yum install postgresql10
+yum install postgresql10-server
+/usr/pgsql-10/bin/postgresql-10-setup initdb
+systemctl enable postgresql-10
+systemctl start postgresql-10
+```
+Login
+```
+sudo -u postgres psql
+\l
+ALTER USER user_name WITH PASSWORD 'new_password'; #change password for user_name
+```
