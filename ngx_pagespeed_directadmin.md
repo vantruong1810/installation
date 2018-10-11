@@ -7,11 +7,17 @@ Lastest version: https://www.modpagespeed.com/doc/release_notes
 
 ``` bash
 NPS_VERSION=1.13.35.2-stable #lastest version
-wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}.zip
-unzip release-${NPS_VERSION}.zip
-cd ngx_pagespeed-release-${NPS_VERSION}/
-wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz
-tar -xzvf ${NPS_VERSION}.tar.gz
+wget https://github.com/apache/incubator-pagespeed-ngx/archive/v${NPS_VERSION}.zip
+unzip v${NPS_VERSION}.zip
+nps_dir=$(find . -name "*pagespeed-ngx-${NPS_VERSION}" -type d)
+cd "$nps_dir"
+# or cd incubator-pagespeed-ngx-${NPS_VERSION}/
+# NPS_RELEASE_NUMBER=${NPS_VERSION/beta/}
+NPS_RELEASE_NUMBER=${NPS_VERSION/stable/}
+psol_url=https://dl.google.com/dl/page-speed/psol/${NPS_RELEASE_NUMBER}.tar.gz
+[ -e scripts/format_binary_url.sh ] && psol_url=$(scripts/format_binary_url.sh PSOL_BINARY_URL)
+wget ${psol_url}
+tar -xzvf $(basename ${psol_url})  # extracts to psol/
 ```
 # 2. Create nginx config
 ```bash
@@ -25,7 +31,7 @@ cp -fp configure/nginx/configure.nginx custom/nginx/configure.nginx
 ```yaml
 #!/bin/sh
 ./configure \
-"--add-module=/root/ngx_pagespeed-release-1.13.35.2-stable" \
+"--add-module=/root/incubator-pagespeed-ngx-1.13.35.2-stable" \
 "--user=nginx" \
 "--group=nginx" \
 "--prefix=/usr" \
@@ -45,6 +51,7 @@ cp -fp configure/nginx/configure.nginx custom/nginx/configure.nginx
 
 # 4. Build nginx config
 ```bash
+cd /usr/local/directadmin/custombuild
 ./build used_configs
 ./build nginx
 ```
@@ -99,4 +106,10 @@ pagespeed DisableFilters extend_cache_images;
 # remove tags with default attributes
 pagespeed EnableFilters elide_attributes;
 pagespeed FetchHttps enable,allow_self_signed;
+```
+
+NOTE: 
+We can copy module `ngx_pagespeed.so` to `/usr/share/nginx/modules` add this line to the top of our main nginx configuation (Eg: /etc/nginx/nginx.conf):
+```
+load_module "modules/ngx_pagespeed.so";
 ```
