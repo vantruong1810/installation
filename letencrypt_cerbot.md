@@ -11,11 +11,11 @@ Preference: [LINK](https://nodejs.vn/topic/113/t%E1%BB%B1-t%E1%BA%A1o-v%C3%A0-c%
 ```bash
 python -v
 ```
-Or `python2.7 -v` or `python3.5 -v` 
+Or `python2.7 -v` or `python3.7 -v` 
 Or check in directory `/usr/local/bin/`
 
-If python version < 2.7 do as below or skip this step:
-
+If python version < 2.7 do as below ortherwise skip this step:
+Link download `python`: https://www.python.org/downloads/source
 Eg: Install python 2.7.6
 ```
 yum -y update
@@ -50,13 +50,10 @@ cd /opt/letsencrypt
 ### Note: 
 SSL files:
 
-`cert.pem`: Domain certificate SSL.
-
-`chain.pem`: Let’s Encrypt certificate.
-
-`fullchain.pem`: Merge cert.pem and chain.pem.
-
-`privkey.pem`: Private key.
+- `cert.pem`: Domain certificate SSL.
+- `chain.pem`: Let’s Encrypt certificate.
+- `fullchain.pem`: Merge `cert.pem` and `chain.pem`.
+- `privkey.pem`: Private key.
 
 SSL path: `/etc/letencrypt/live/domain.com/`
 
@@ -81,12 +78,14 @@ email = contact@nodejs.vn
 domains = nodejs.vn, www.nodejs.vn
 webroot-path = /usr/share/nginx/html
 ```
+
 Run this command:
+
 ```
 cd /opt/letsencrypt
 ./letsencrypt-auto certonly -a webroot --renew-by-default --config /usr/local/etc/le-renew-webroot.ini
 ```
 
-[Optional] Maybe run `sudo nginx restart` as well
+[Optional] Maybe run `sudo service nginx restart` as well
 
 *SSL will be expired after 3 months*
